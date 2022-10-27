@@ -1,1 +1,1 @@
-export type ComponentPropType = 'string';
+export type ComponentPropType = 'string' | 'color';

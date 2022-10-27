@@ -2,6 +2,8 @@ import { ComponentProp } from "./ComponentProp";
 import { ComponentType } from "./ComponentType";
 
 export class Component {
+  static ButtonComponent = new Component('button', [ new ComponentProp('text', 'string', 'Click me'), new ComponentProp('color', 'color', 'transparent') ]);
+  static LabelComponent = new Component('label', [ new ComponentProp('text', 'string', 'Hello world') ]);
 
   static currentId: number = 0;
 
@@ -18,6 +20,14 @@ export class Component {
 
   findProp(name: string): ComponentProp | undefined {
     return this.props.find(prop => prop.name === name);
+  }
+
+  updateProp(name: string, value: string) {
+    const prop = this.findProp(name);
+    
+    if (prop) {
+      prop.value = value;
+    }
   }
 
   clone(): Component {
