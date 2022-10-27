@@ -6,7 +6,7 @@ import { MouseEvent } from "react";
 import './styles/index.scss';
 
 function App() {
-  const [components, setComponents] = useState<Component[]>([new Component('title', [new ComponentProp('text', 'string', 'Test')])]);
+  const [components, setComponents] = useState<Component[]>([new Component('button', [new ComponentProp('text', 'string', 'Test')])]);
   const [currentComponent, setCurrentComponent] = useState<Component | null>(null);
 
   function handleComponentClick(e: MouseEvent, component: Component) {
@@ -14,17 +14,18 @@ function App() {
     setCurrentComponent(component);
   }
 
+  function updateComponent(oldComponent: Component, newComponent: Component) {
+    setComponents(components.map(c => c === oldComponent ? newComponent : c));
+    if (currentComponent === oldComponent) {
+      setCurrentComponent(newComponent);
+    }
+  }
+
   function handleStringPropertiesChange(e: React.FormEvent<HTMLInputElement>, component: Component, prop: ComponentProp) {
     e.preventDefault();
     const newComponent = component.clone();
-    if (newComponent.findProp('text')) {
-      console.log('test')
-      newComponent.findProp('text')!.value = 'Test';
-    }
-    console.log(components);
-    console.log(components.map(c => c.id === newComponent.id ? newComponent : c))
-    setComponents(components.map(c => c.id === newComponent.id ? newComponent : c));
-    console.log(components);
+    newComponent.updateProp(prop.name, e.currentTarget.value);
+    updateComponent(component, newComponent);
   }
 
   return (
