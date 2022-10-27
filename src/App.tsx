@@ -3,7 +3,7 @@ import { EditableComponent } from './components/EditableComponent';
 import { Component } from './models/Component';
 import { ComponentProp } from './models/ComponentProp';
 import { MouseEvent } from "react";
-import { ChartBarSquareIcon, ChatBubbleBottomCenterIcon, CursorArrowRaysIcon, ListBulletIcon, MapIcon, PhotoIcon, RectangleGroupIcon, TagIcon } from '@heroicons/react/24/outline';
+import { ChartBarSquareIcon, ChatBubbleBottomCenterIcon, CursorArrowRaysIcon, ListBulletIcon, MapIcon, PhotoIcon, RectangleGroupIcon, TagIcon, TrashIcon } from '@heroicons/react/24/outline';
 import './styles/index.scss';
 import { ComponentType } from './models/ComponentType';
 
@@ -79,6 +79,7 @@ function App() {
               <TagIcon className='icon' />
               <ChartBarSquareIcon className='icon' />
               <MapIcon className='icon' />
+              <TrashIcon className='icon delete' onClick={() => setComponents([])}/>
           </div>
           {currentComponent && (
             <div className='properties'>
