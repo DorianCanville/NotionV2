@@ -32,10 +32,9 @@ function App() {
 
   const [currentComponent, setCurrentComponent] = useState<Component | null>(null);
 
-  const handleRemoveItem = (idx: number) => {
+  function handleRemoveItem(idx: number) {
     setComponents(components.filter(item => item.id !== idx));
-    };
-  
+  };
 
   function handleComponentClick(e: MouseEvent, component: Component) {
     e.preventDefault();
