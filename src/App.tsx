@@ -105,7 +105,7 @@ function App() {
     <div className="App">
       <div className='navbar'>
         <img className='logo_cesi' src='./logo_cesi.png'/>
-        <input type="submit" onClick={(e) =>{ printDocument("worksheet")}} />
+        <button className='exportButton' onClick={(e) =>{ printDocument("worksheet")}}>Exporter en PDF</button>
       </div>
       <div className='wrapper'>
         <div className='worksheet' id='worksheet'>
