@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -39,6 +43,10 @@ code {
     display: grid;
     grid-template-columns: 3fr 1fr;
   
+    .worksheet {
+      overflow-y: scroll;
+    }
+
     .toolbox {
       display: flex;
       flex-direction: column;
@@ -54,9 +62,10 @@ code {
         grid-template-columns: repeat(4, 1fr);
         grid-template-rows: repeat(4, 1fr);
         gap: 15px;
+        justify-items: center;
         
         .icon {
-          width: 30px;
+          width: 60px;
           padding: 10px;
           color: #000;
           background: rgba(0,0,0,0.1);
@@ -85,4 +94,34 @@ code {
 
 .propsList {
   list-style-type: none;
+}
+
+.editableComponent {
+  width: 100%;
+  padding: 8px 16px;
+  position: relative;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+
+    .closeButton {
+      display: block;
+    }
+  }
+
+  .closeButton {
+    display: none;
+    position: absolute;
+    right: 8px;
+    z-index: 999;
+  }
+}
+
+.editImages {
+  width: 100%;
+  height: 50px;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: scroll;
+  resize: vertical;
 }
