@@ -60,6 +60,10 @@ function App() {
     switch (type) {
       case 'button':
         setComponents([...components, Component.ButtonComponent.clone()]);
+        break;
+      case 'label':
+        setComponents([...components, Component.LabelComponent.clone()]);
+        break;
     }
   }
 
@@ -77,7 +81,7 @@ function App() {
         <div className='toolbox'>
           <div className='iconComponents'>
               <CursorArrowRaysIcon className='icon' onClick={() => handleToolbarAdd('button')} />
-              <ChatBubbleBottomCenterIcon className='icon' />
+              <ChatBubbleBottomCenterIcon className='icon' onClick={() => handleToolbarAdd('label')}/>
               <PhotoIcon className='icon' />
               <ListBulletIcon className='icon' />
               <RectangleGroupIcon className='icon' />
