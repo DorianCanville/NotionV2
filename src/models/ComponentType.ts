@@ -1,1 +1,1 @@
-export type ComponentType = 'title' | 'button';
+export type ComponentType = 'title' | 'button' | 'carousel';

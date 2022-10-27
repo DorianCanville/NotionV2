@@ -43,6 +43,10 @@ code {
     display: grid;
     grid-template-columns: 3fr 1fr;
   
+    .worksheet {
+      overflow-y: scroll;
+    }
+
     .toolbox {
       display: flex;
       flex-direction: column;
@@ -105,5 +109,15 @@ code {
     display: none;
     position: absolute;
     right: 8px;
+    z-index: 999;
   }
+}
+
+.editImages {
+  width: 100%;
+  height: 50px;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: scroll;
+  resize: vertical;
 }

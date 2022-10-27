@@ -35,6 +35,7 @@ function App() {
   function handleRemoveItem(e: MouseEvent, idx: number) {
     e.stopPropagation();
     setComponents(components.filter(item => item.id !== idx));
+    setCurrentComponent(null);
   };
 
   function handleComponentClick(e: MouseEvent, component: Component) {
@@ -56,10 +57,21 @@ function App() {
     updateComponent(component, newComponent);
   }
 
+  function handleTextareaPropertiesChange(e: React.FormEvent<HTMLTextAreaElement>, component: Component, prop: ComponentProp) {
+    e.preventDefault();
+    const newComponent = component.clone();
+    newComponent.updateProp(prop.name, e.currentTarget.value);
+    updateComponent(component, newComponent);
+  }
+
   function handleToolbarAdd(type: ComponentType) {
     switch (type) {
       case 'button':
         setComponents([...components, Component.ButtonComponent.clone()]);
+        break;
+      case 'carousel':
+        setComponents([...components, Component.CarouselComponent.clone()]);
+        break;
     }
   }
 
@@ -80,7 +92,7 @@ function App() {
               <ChatBubbleBottomCenterIcon className='icon' />
               <PhotoIcon className='icon' />
               <ListBulletIcon className='icon' />
-              <RectangleGroupIcon className='icon' />
+              <RectangleGroupIcon className='icon' onClick={() => handleToolbarAdd('carousel')} />
               <TagIcon className='icon' />
               <ChartBarSquareIcon className='icon' />
               <MapIcon className='icon' />
@@ -92,6 +104,7 @@ function App() {
                 {currentComponent.props.map((prop, index) => (
                   <li key={index}><span className='propName'>{prop.name}</span>
                     { prop.type === 'string' && <input type="text" value={prop.value} onChange={(e) => { handleStringPropertiesChange(e, currentComponent, prop) }} /> }
+                    { prop.type === 'images' && <textarea value={prop.value} className='editImages' onChange={(e) => { handleTextareaPropertiesChange(e, currentComponent, prop) }} /> }
                   </li>
                 ))}
               </ul>
