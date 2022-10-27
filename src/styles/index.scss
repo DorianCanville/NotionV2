@@ -12,33 +12,54 @@ code {
     monospace;
 }
 
-.navbar {
-  position: relative;
-  background: #fbe216;
-  width: 100%;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-
-  .logo_cesi {
-    position: absolute;
-    left: 150px;
-    width: 80px;
-  }
-}
-
-.wrapper {
-  width: 100%;
-  height: 100vh;
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-
-  .toolbox {
+.App {
+  .navbar {
+    position: relative;
+    background: #fbe216;
     width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-top: 0;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  
+    .logo_cesi {
+      position: absolute;
+      left: 150px;
+      width: 80px;
+    }
+  }
+  
+  .wrapper {
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+  
+    .toolbox {
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-top: 0;
+
+      .iconComponents {
+        width: 100%;
+        height: 50%;
+        padding: 15px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        gap: 15px;
+        
+        .icon {
+          width: 30px;
+          padding: 10px;
+          color: #000;
+          background: rgba(0,0,0,0.1);
+          border-radius: 5px;
+          cursor: pointer;
+        }
+      }
+    }
   }
 }

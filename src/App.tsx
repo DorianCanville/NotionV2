@@ -3,6 +3,7 @@ import { EditableComponent } from './components/EditableComponent';
 import { Component } from './models/Component';
 import { ComponentProp } from './models/ComponentProp';
 import { MouseEvent } from "react";
+import { ChartBarSquareIcon, ChatBubbleBottomCenterIcon, CursorArrowRaysIcon, ListBulletIcon, MapIcon, PhotoIcon, RectangleGroupIcon, TagIcon } from '@heroicons/react/24/outline';
 import './styles/index.scss';
 
 function App() {
@@ -18,13 +19,9 @@ function App() {
     e.preventDefault();
     const newComponent = component.clone();
     if (newComponent.findProp('text')) {
-      console.log('test')
       newComponent.findProp('text')!.value = 'Test';
     }
-    console.log(components);
-    console.log(components.map(c => c.id === newComponent.id ? newComponent : c))
     setComponents(components.map(c => c.id === newComponent.id ? newComponent : c));
-    console.log(components);
   }
 
   return (
@@ -39,6 +36,16 @@ function App() {
           ))}
         </div>
         <div className='toolbox'>
+          <div className='iconComponents'>
+              <CursorArrowRaysIcon className='icon' />
+              <ChatBubbleBottomCenterIcon className='icon' />
+              <PhotoIcon className='icon' />
+              <ListBulletIcon className='icon' />
+              <RectangleGroupIcon className='icon' />
+              <TagIcon className='icon' />
+              <ChartBarSquareIcon className='icon' />
+              <MapIcon className='icon' />
+          </div>
           {currentComponent && (
             <div>
               <h1>{currentComponent.type}</h1>
