@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { EditableComponent } from './components/EditableComponent';
 import { Component } from './models/Component';
 import { ComponentProp } from './models/ComponentProp';
 import { MouseEvent } from "react";
+import './styles/index.scss';
 
 function App() {
   const [components, setComponents] = useState<Component[]>([new Component('title', [new ComponentProp('text', 'string', 'Test')])]);
@@ -28,22 +29,30 @@ function App() {
 
   return (
     <div className="App">
-      {components.map((component, index) => (
-        <EditableComponent key={index} component={component} onClick={(e: MouseEvent) => { handleComponentClick(e, component) }} />
-      ))}
-
-      {currentComponent && (
-        <div>
-          <h1>{currentComponent.type}</h1>
-          <ul>
-            {currentComponent.props.map((prop, index) => (
-              <li key={index}>{prop.name}: 
-                { prop.type === 'string' && <input type="text" value={prop.value} onChange={(e) => { handleStringPropertiesChange(e, currentComponent, prop) }} /> }
-              </li>
-            ))}
-          </ul>
+      <div className='navbar'>
+        <img className='logo_cesi' src='./logo_cesi.png'/>
+      </div>
+      <div className='wrapper'>
+        <div className='worksheet'>
+          {components.map((component, index) => (
+            <EditableComponent key={index} component={component} onClick={(e: MouseEvent) => { handleComponentClick(e, component) }} />
+          ))}
         </div>
-      )}
+        <div className='toolbox'>
+          {currentComponent && (
+            <div>
+              <h1>{currentComponent.type}</h1>
+              <ul>
+                {currentComponent.props.map((prop, index) => (
+                  <li key={index}>{prop.name}: 
+                    { prop.type === 'string' && <input type="text" value={prop.value} onChange={(e) => { handleStringPropertiesChange(e, currentComponent, prop) }} /> }
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
