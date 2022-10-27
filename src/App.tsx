@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { EditableComponent } from './components/EditableComponent';
 import { Component } from './models/Component';
 import { ComponentProp } from './models/ComponentProp';
@@ -6,8 +6,7 @@ import { MouseEvent } from "react";
 import { ChartBarSquareIcon, ChatBubbleBottomCenterIcon, CursorArrowRaysIcon, ListBulletIcon, MapIcon, PhotoIcon, RectangleGroupIcon, TagIcon, TrashIcon } from '@heroicons/react/24/outline';
 import './styles/index.scss';
 import { ComponentType } from './models/ComponentType';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend"
+import { ComponentPropType } from './models/ComponentPropType';
 
 function App() {
   const [components, setComponents] = useState<Component[]>([]);
@@ -17,14 +16,8 @@ function App() {
     dataTransfer: DataTransfer;
   }
 
-  const handleDragStart = (e: DragEvent<HTMLDivElement>) => {
-    console.log("début");
-  };
-
-  const handleDragEnd = (e: DragEvent<HTMLDivElement>) => {
-    console.log(e);
-    console.log("fin");
-    handleToolbarAdd('button');
+  const handleDragEnd = (e: DragEvent<HTMLDivElement>, componentType: ComponentType) => {
+    handleToolbarAdd(componentType);
   }
 
   useEffect(() => {
@@ -93,18 +86,6 @@ function App() {
         break;
     }
   }
-
-  const iconsGrab = [
-    {
-      id: 1,
-      icon: <CursorArrowRaysIcon className='icon' onClick={() => handleToolbarAdd('button')} />
-    },
-    {
-      id: 2,
-      icon: <ChatBubbleBottomCenterIcon className='icon' />
-    }
-  ]
-
   
   function printDocument (id : string) {
     let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
@@ -134,13 +115,11 @@ function App() {
         </div>
         <div className='toolbox'>
           <div className='iconComponents'>
-              <CursorArrowRaysIcon className='icon' onClick={() => handleToolbarAdd('button')} />  
-              <div draggable={true} onDragStart={handleDragStart} onDragEnd={handleDragEnd} >
-                <ChatBubbleBottomCenterIcon className='icon' />
-              </div>
+              <div draggable={true} onDragEnd={e => handleDragEnd(e, 'button')} ><CursorArrowRaysIcon className='icon' onClick={() => handleToolbarAdd('button')} /></div>  
+              <div draggable={true} onDragEnd={e => handleDragEnd(e, 'label')} ><ChatBubbleBottomCenterIcon className='icon' /></div>
               <PhotoIcon className='icon' />
               <ListBulletIcon className='icon' />
-              <RectangleGroupIcon className='icon' onClick={() => handleToolbarAdd('carousel')} />
+              <div draggable={true} onDragEnd={e => handleDragEnd(e, 'carousel')} ><RectangleGroupIcon className='icon' onClick={() => handleToolbarAdd('carousel')} /></div>
               <TagIcon className='icon' />
               <ChartBarSquareIcon className='icon' />
               <MapIcon className='icon' />
