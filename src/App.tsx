@@ -1,17 +1,49 @@
 import { useState } from 'react';
+import { EditableComponent } from './components/EditableComponent';
 import { Component } from './models/Component';
 import { ComponentProp } from './models/ComponentProp';
+import { MouseEvent } from "react";
 
 function App() {
-  const [components, setComponents] = useState<Component[]>([new Component('title', [new ComponentProp('text', 'Test')])]);
+  const [components, setComponents] = useState<Component[]>([new Component('title', [new ComponentProp('text', 'string', 'Test')])]);
+  const [currentComponent, setCurrentComponent] = useState<Component | null>(null);
+
+  function handleComponentClick(e: MouseEvent, component: Component) {
+    e.preventDefault();
+    setCurrentComponent(component);
+  }
+
+  function handleStringPropertiesChange(e: React.FormEvent<HTMLInputElement>, component: Component, prop: ComponentProp) {
+    e.preventDefault();
+    const newComponent = component.clone();
+    if (newComponent.findProp('text')) {
+      console.log('test')
+      newComponent.findProp('text')!.value = 'Test';
+    }
+    console.log(components);
+    console.log(components.map(c => c.id === newComponent.id ? newComponent : c))
+    setComponents(components.map(c => c.id === newComponent.id ? newComponent : c));
+    console.log(components);
+  }
 
   return (
     <div className="App">
       {components.map((component, index) => (
-        <div key={index}>
-          {component.type === 'title' && <h1>{component.findProp('text')?.value}</h1>}
-        </div>
+        <EditableComponent key={index} component={component} onClick={(e: MouseEvent) => { handleComponentClick(e, component) }} />
       ))}
+
+      {currentComponent && (
+        <div>
+          <h1>{currentComponent.type}</h1>
+          <ul>
+            {currentComponent.props.map((prop, index) => (
+              <li key={index}>{prop.name}: 
+                { prop.type === 'string' && <input type="text" value={prop.value} onChange={(e) => { handleStringPropertiesChange(e, currentComponent, prop) }} /> }
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
