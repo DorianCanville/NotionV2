@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { EditableComponent } from './components/EditableComponent';
 import { Component } from './models/Component';
 import { ComponentProp } from './models/ComponentProp';
@@ -6,10 +6,26 @@ import { MouseEvent } from "react";
 import { ChartBarSquareIcon, ChatBubbleBottomCenterIcon, CursorArrowRaysIcon, ListBulletIcon, MapIcon, PhotoIcon, RectangleGroupIcon, TagIcon, TrashIcon } from '@heroicons/react/24/outline';
 import './styles/index.scss';
 import { ComponentType } from './models/ComponentType';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend"
 
 function App() {
   const [components, setComponents] = useState<Component[]>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
+
+  interface DragEvent<T = Element> extends MouseEvent<T> {
+    dataTransfer: DataTransfer;
+  }
+
+  const handleDragStart = (e: DragEvent<HTMLDivElement>) => {
+    console.log("début");
+  };
+
+  const handleDragEnd = (e: DragEvent<HTMLDivElement>) => {
+    console.log(e);
+    console.log("fin");
+    handleToolbarAdd('button');
+  }
 
   useEffect(() => {
     let temp = JSON.parse(localStorage.getItem('components') || '[]'); // get components from local storage
@@ -78,6 +94,17 @@ function App() {
     }
   }
 
+  const iconsGrab = [
+    {
+      id: 1,
+      icon: <CursorArrowRaysIcon className='icon' onClick={() => handleToolbarAdd('button')} />
+    },
+    {
+      id: 2,
+      icon: <ChatBubbleBottomCenterIcon className='icon' />
+    }
+  ]
+
   
   function printDocument (id : string) {
     let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
@@ -86,12 +113,12 @@ function App() {
     mywindow!.document.write('</head><body >');
     mywindow!.document.write(document.getElementById("worksheet")!.innerHTML);
     mywindow!.document.write('</body></html>');
-  
+
     mywindow!.document.close(); // necessary for IE >= 10
     mywindow!.focus(); // necessary for IE >= 10*/
     mywindow!.print();
     mywindow!.close();   
-}
+  }
 
   return (
     <div className="App">
@@ -107,8 +134,10 @@ function App() {
         </div>
         <div className='toolbox'>
           <div className='iconComponents'>
-              <CursorArrowRaysIcon className='icon' onClick={() => handleToolbarAdd('button')} />
-              <ChatBubbleBottomCenterIcon className='icon' onClick={() => handleToolbarAdd('label')}/>
+              <CursorArrowRaysIcon className='icon' onClick={() => handleToolbarAdd('button')} />  
+              <div draggable={true} onDragStart={handleDragStart} onDragEnd={handleDragEnd} >
+                <ChatBubbleBottomCenterIcon className='icon' />
+              </div>
               <PhotoIcon className='icon' />
               <ListBulletIcon className='icon' />
               <RectangleGroupIcon className='icon' onClick={() => handleToolbarAdd('carousel')} />
