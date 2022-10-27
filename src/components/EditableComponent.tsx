@@ -4,15 +4,17 @@ import { MouseEvent } from "react";
 export type EditableComponentProps = {
   component: Component;
   onClick?: (e: MouseEvent) => void;
-  deleteComp: (e: MouseEvent) => void;
+  onDelete: (e: MouseEvent) => void;
 }
 
-export function EditableComponent({ component, onClick, deleteComp }: EditableComponentProps) {
+export function EditableComponent({ component, onClick, onDelete }: EditableComponentProps) {
 
   return (
-    <div onClick={onClick}>
-      <div><input type='button' value="X" onClick={deleteComp} /></div>
+    <div onClick={onClick} className='editableComponent'>
+      <div className="closeButton"><input type='button' value="X" onClick={onDelete} /></div>
+      {component.type === 'label' && <p>{component.findProp('text')?.value}</p>}
       {component.type === 'title' && <h1>{component.findProp('text')?.value}</h1>}
+      {component.type === 'button' && <button style={{ backgroundColor: component.findProp('color')?.value}}>{component.findProp('text')?.value}</button>}
     </div>
   )
 }
