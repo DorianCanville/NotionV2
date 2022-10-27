@@ -2,6 +2,8 @@ import { ComponentProp } from "./ComponentProp";
 import { ComponentType } from "./ComponentType";
 
 export class Component {
+  static ButtonComponent = new Component('button', [ new ComponentProp('text', 'string', 'Click me') ]);
+
   static currentId: number = 0;
 
   id: number;

@@ -5,21 +5,30 @@ import { ComponentProp } from './models/ComponentProp';
 import { MouseEvent } from "react";
 import { ChartBarSquareIcon, ChatBubbleBottomCenterIcon, CursorArrowRaysIcon, ListBulletIcon, MapIcon, PhotoIcon, RectangleGroupIcon, TagIcon } from '@heroicons/react/24/outline';
 import './styles/index.scss';
+import { ComponentType } from './models/ComponentType';
 
 function App() {
   const [components, setComponents] = useState<Component[]>([]);
-
-  let temp = JSON.parse(localStorage.getItem('components') || '[]'); // get components from local storage
-  let tempComponents = temp.map((c: any) => {
-    let props = c.props.map((p: any) => {
-      return new ComponentProp(p.name, p.type, p.value);
-    });
-    return new Component(c.type, props);
-  });
+  const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {
+    let temp = JSON.parse(localStorage.getItem('components') || '[]'); // get components from local storage
+    let tempComponents = temp.map((c: any) => {
+      let props = c.props.map((p: any) => {
+        return new ComponentProp(p.name, p.type, p.value);
+      });
+      return new Component(c.type, props);
+    });
+
     setComponents(tempComponents);
+    setLoaded(true);
   }, []);
+
+  useEffect(() => {
+    if (loaded) {
+      localStorage.setItem('components', JSON.stringify(components)); // save components to local storage
+    }
+  }, [components, loaded]);
 
   const [currentComponent, setCurrentComponent] = useState<Component | null>(null);
 
@@ -33,8 +42,6 @@ function App() {
     if (currentComponent === oldComponent) {
       setCurrentComponent(newComponent);
     }
-
-    localStorage.setItem('components', JSON.stringify(components.map(c => c === oldComponent ? newComponent : c))); // save components to local storage
   }
 
   function handleStringPropertiesChange(e: React.FormEvent<HTMLInputElement>, component: Component, prop: ComponentProp) {
@@ -42,6 +49,13 @@ function App() {
     const newComponent = component.clone();
     newComponent.updateProp(prop.name, e.currentTarget.value);
     updateComponent(component, newComponent);
+  }
+
+  function handleToolbarAdd(type: ComponentType) {
+    switch (type) {
+      case 'button':
+        setComponents([...components, Component.ButtonComponent.clone()]);
+    }
   }
 
   return (
@@ -57,7 +71,7 @@ function App() {
         </div>
         <div className='toolbox'>
           <div className='iconComponents'>
-              <CursorArrowRaysIcon className='icon' />
+              <CursorArrowRaysIcon className='icon' onClick={() => handleToolbarAdd('button')} />
               <ChatBubbleBottomCenterIcon className='icon' />
               <PhotoIcon className='icon' />
               <ListBulletIcon className='icon' />
@@ -67,11 +81,11 @@ function App() {
               <MapIcon className='icon' />
           </div>
           {currentComponent && (
-            <div>
-              <h1>{currentComponent.type}</h1>
-              <ul>
+            <div className='properties'>
+              <h1>Propriétés de <span>{currentComponent.type}</span></h1>
+              <ul className='propsList'>
                 {currentComponent.props.map((prop, index) => (
-                  <li key={index}>{prop.name}: 
+                  <li key={index}><span className='propName'>{prop.name}</span>
                     { prop.type === 'string' && <input type="text" value={prop.value} onChange={(e) => { handleStringPropertiesChange(e, currentComponent, prop) }} /> }
                   </li>
                 ))}
