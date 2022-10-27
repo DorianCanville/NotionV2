@@ -33,13 +33,29 @@ function App() {
     console.log(components);
   }
 
+  
+  function printDocument (id : string) {
+    let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
+
+    mywindow!.document.write(`<html><head><title>NotionV2</title>`);
+    mywindow!.document.write('</head><body >');
+    mywindow!.document.write(document.getElementById("worksheet")!.innerHTML);
+    mywindow!.document.write('</body></html>');
+  
+    mywindow!.document.close(); // necessary for IE >= 10
+    mywindow!.focus(); // necessary for IE >= 10*/
+    mywindow!.print();
+    mywindow!.close();   
+}
+
   return (
     <div className="App">
       <div className='navbar'>
         <img className='logo_cesi' src='./logo_cesi.png'/>
+        <input type="submit" onClick={(e) =>{ printDocument("worksheet")}} />
       </div>
       <div className='wrapper'>
-        <div className='worksheet'>
+        <div className='worksheet' id='worksheet'>
           {components.map((component, index) => (
             <EditableComponent key={index} component={component} onClick={(e: MouseEvent) => { handleComponentClick(e, component) }} deleteComp={(e: MouseEvent) => { handleRemoveItem(component.id)}} />
           ))}
