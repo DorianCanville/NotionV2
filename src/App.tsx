@@ -97,6 +97,7 @@ function App() {
                 {currentComponent.props.map((prop, index) => (
                   <li key={index}><span className='propName'>{prop.name}</span>
                     { prop.type === 'string' && <input type="text" value={prop.value} onChange={(e) => { handleStringPropertiesChange(e, currentComponent, prop) }} /> }
+                    { prop.type === 'color' && <input type="color" value={prop.value} onChange={(e) => { handleStringPropertiesChange(e, currentComponent, prop) }} /> }
                   </li>
                 ))}
               </ul>
