@@ -4,7 +4,6 @@ import { Component } from './models/Component';
 import { ComponentProp } from './models/ComponentProp';
 import { MouseEvent } from "react";
 import './styles/index.scss';
-import Export from './components/ExportTest'
 
 function App() {
   const [components, setComponents] = useState<Component[]>([new Component('title', [new ComponentProp('text', 'string', 'Test')])]);
