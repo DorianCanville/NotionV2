@@ -11,6 +11,7 @@ export function EditableComponent({ component, onClick }: EditableComponentProps
   return (
     <div onClick={onClick}>
       {component.type === 'title' && <h1>{component.findProp('text')?.value}</h1>}
+      {component.type === 'button' && <button>{component.findProp('text')?.value}</button>}
     </div>
   )
 }

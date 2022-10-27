@@ -2,7 +2,6 @@ import { ComponentProp } from "./ComponentProp";
 import { ComponentType } from "./ComponentType";
 
 export class Component {
-
   static currentId: number = 0;
 
   id: number;
@@ -18,6 +17,14 @@ export class Component {
 
   findProp(name: string): ComponentProp | undefined {
     return this.props.find(prop => prop.name === name);
+  }
+
+  updateProp(name: string, value: string) {
+    const prop = this.findProp(name);
+    
+    if (prop) {
+      prop.value = value;
+    }
   }
 
   clone(): Component {
