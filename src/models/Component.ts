@@ -3,6 +3,7 @@ import { ComponentType } from "./ComponentType";
 
 export class Component {
   static ButtonComponent = new Component('button', [ new ComponentProp('text', 'string', 'Click me') ]);
+  static LabelComponent = new Component('label', [ new ComponentProp('text', 'string', 'Hello world') ]);
 
   static currentId: number = 0;
 

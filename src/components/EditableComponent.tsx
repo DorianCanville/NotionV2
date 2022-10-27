@@ -12,7 +12,7 @@ export function EditableComponent({ component, onClick, deleteComp }: EditableCo
   return (
     <div onClick={onClick}>
       <div><input type='button' value="X" onClick={deleteComp} /></div>
-      {component.type === 'title' && <h1>{component.findProp('text')?.value}</h1>}
+      {component.type === 'label' && <p>{component.findProp('text')?.value}</p>}
       {component.type === 'button' && <button>{component.findProp('text')?.value}</button>}
     </div>
   )
