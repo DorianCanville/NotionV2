@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { EditableComponent } from './components/EditableComponent';
 import { Component } from './models/Component';
 import { ComponentProp } from './models/ComponentProp';
@@ -7,7 +7,20 @@ import { ChartBarSquareIcon, ChatBubbleBottomCenterIcon, CursorArrowRaysIcon, Li
 import './styles/index.scss';
 
 function App() {
-  const [components, setComponents] = useState<Component[]>([new Component('button', [new ComponentProp('text', 'string', 'Test')])]);
+  const [components, setComponents] = useState<Component[]>([]);
+
+  let temp = JSON.parse(localStorage.getItem('components') || '[]'); // get components from local storage
+  let tempComponents = temp.map((c: any) => {
+    let props = c.props.map((p: any) => {
+      return new ComponentProp(p.name, p.type, p.value);
+    });
+    return new Component(c.type, props);
+  });
+
+  useEffect(() => {
+    setComponents(tempComponents);
+  }, []);
+
   const [currentComponent, setCurrentComponent] = useState<Component | null>(null);
 
   function handleComponentClick(e: MouseEvent, component: Component) {
@@ -20,6 +33,8 @@ function App() {
     if (currentComponent === oldComponent) {
       setCurrentComponent(newComponent);
     }
+
+    localStorage.setItem('components', JSON.stringify(components.map(c => c === oldComponent ? newComponent : c))); // save components to local storage
   }
 
   function handleStringPropertiesChange(e: React.FormEvent<HTMLInputElement>, component: Component, prop: ComponentProp) {
