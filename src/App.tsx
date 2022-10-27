@@ -63,6 +63,17 @@ function App() {
     }
   }
 
+  const iconsGrab = [
+    {
+      id: 1,
+      icon: <CursorArrowRaysIcon className='icon' onClick={() => handleToolbarAdd('button')} />
+    },
+    {
+      id: 2,
+      icon: <ChatBubbleBottomCenterIcon className='icon' />
+    }
+  ]
+
   return (
     <div className="App">
       <div className='navbar'>
@@ -76,6 +87,12 @@ function App() {
         </div>
         <div className='toolbox'>
           <div className='iconComponents'>
+              {iconsGrab.map((icon) => {
+                return (
+                  icon.icon
+                )
+              })}
+
               <CursorArrowRaysIcon className='icon' onClick={() => handleToolbarAdd('button')} />
               <ChatBubbleBottomCenterIcon className='icon' />
               <PhotoIcon className='icon' />
