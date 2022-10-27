@@ -6,10 +6,19 @@ import { MouseEvent } from "react";
 import { ChartBarSquareIcon, ChatBubbleBottomCenterIcon, CursorArrowRaysIcon, ListBulletIcon, MapIcon, PhotoIcon, RectangleGroupIcon, TagIcon, TrashIcon } from '@heroicons/react/24/outline';
 import './styles/index.scss';
 import { ComponentType } from './models/ComponentType';
+import { ComponentPropType } from './models/ComponentPropType';
 
 function App() {
   const [components, setComponents] = useState<Component[]>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
+
+  interface DragEvent<T = Element> extends MouseEvent<T> {
+    dataTransfer: DataTransfer;
+  }
+
+  const handleDragEnd = (e: DragEvent<HTMLDivElement>, componentType: ComponentType) => {
+    handleToolbarAdd(componentType);
+  }
 
   useEffect(() => {
     let temp = JSON.parse(localStorage.getItem('components') || '[]'); // get components from local storage
@@ -77,7 +86,6 @@ function App() {
         break;
     }
   }
-
   
   function printDocument (id : string) {
     let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
@@ -86,18 +94,18 @@ function App() {
     mywindow!.document.write('</head><body >');
     mywindow!.document.write(document.getElementById("worksheet")!.innerHTML);
     mywindow!.document.write('</body></html>');
-  
+
     mywindow!.document.close(); // necessary for IE >= 10
     mywindow!.focus(); // necessary for IE >= 10*/
     mywindow!.print();
     mywindow!.close();   
-}
+  }
 
   return (
     <div className="App">
       <div className='navbar'>
         <img className='logo_cesi' src='./logo_cesi.png'/>
-        <input type="submit" onClick={(e) =>{ printDocument("worksheet")}} />
+        <button className='exportButton' onClick={(e) =>{ printDocument("worksheet")}}>Exporter en PDF</button>
       </div>
       <div className='wrapper'>
         <div className='worksheet' id='worksheet'>
@@ -107,11 +115,11 @@ function App() {
         </div>
         <div className='toolbox'>
           <div className='iconComponents'>
-              <CursorArrowRaysIcon className='icon' onClick={() => handleToolbarAdd('button')} />
-              <ChatBubbleBottomCenterIcon className='icon' onClick={() => handleToolbarAdd('label')}/>
+              <div draggable={true} onDragEnd={e => handleDragEnd(e, 'button')} ><CursorArrowRaysIcon className='icon' onClick={() => handleToolbarAdd('button')} /></div>  
+              <div draggable={true} onDragEnd={e => handleDragEnd(e, 'label')} ><ChatBubbleBottomCenterIcon className='icon' /></div>
               <PhotoIcon className='icon' />
               <ListBulletIcon className='icon' />
-              <RectangleGroupIcon className='icon' onClick={() => handleToolbarAdd('carousel')} />
+              <div draggable={true} onDragEnd={e => handleDragEnd(e, 'carousel')} ><RectangleGroupIcon className='icon' onClick={() => handleToolbarAdd('carousel')} /></div>
               <TagIcon className='icon' />
               <ChartBarSquareIcon className='icon' />
               <MapIcon className='icon' />
