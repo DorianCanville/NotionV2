@@ -11,6 +11,7 @@
     "@types/node": "^16.18.2",
     "@types/react": "^18.0.23",
     "@types/react-dom": "^18.0.7",
+    "jspdf": "^2.5.1",
     "react": "^18.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",

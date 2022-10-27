@@ -7,6 +7,7 @@ import { ChartBarSquareIcon, ChatBubbleBottomCenterIcon, CursorArrowRaysIcon, Li
 import './styles/index.scss';
 import { ComponentType } from './models/ComponentType';
 import { ComponentPropType } from './models/ComponentPropType';
+import jsPDF from 'jspdf';
 
 function App() {
   const [components, setComponents] = useState<Component[]>([]);
