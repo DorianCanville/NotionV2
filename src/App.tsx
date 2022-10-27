@@ -32,10 +32,10 @@ function App() {
 
   const [currentComponent, setCurrentComponent] = useState<Component | null>(null);
 
-  const handleRemoveItem = (idx: number) => {
+  function handleRemoveItem(e: MouseEvent, idx: number) {
+    e.stopPropagation();
     setComponents(components.filter(item => item.id !== idx));
-    };
-  
+  };
 
   function handleComponentClick(e: MouseEvent, component: Component) {
     e.preventDefault();
@@ -75,7 +75,7 @@ function App() {
       <div className='wrapper'>
         <div className='worksheet'>
           {components.map((component, index) => (
-            <EditableComponent key={index} component={component} onClick={(e: MouseEvent) => { handleComponentClick(e, component) }} deleteComp={(e: MouseEvent) => { handleRemoveItem(component.id)}} />
+            <EditableComponent key={index} component={component} onClick={(e: MouseEvent) => { handleComponentClick(e, component) }} onDelete={(e: MouseEvent) => { handleRemoveItem(e, component.id)}} />
           ))}
         </div>
         <div className='toolbox'>
