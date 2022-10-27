@@ -1,0 +1,1 @@
+export type ComponentType = 'title' | 'button' | 'link';
