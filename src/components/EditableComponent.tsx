@@ -14,8 +14,9 @@ export function EditableComponent({ component, onClick, onDelete }: EditableComp
   return (
     <div onClick={onClick} className='editableComponent'>
       <div className="closeButton"><input type='button' value="X" onClick={onDelete} /></div>
+      {component.type === 'label' && <p>{component.findProp('text')?.value}</p>}
       {component.type === 'title' && <h1>{component.findProp('text')?.value}</h1>}
-      {component.type === 'button' && <button>{component.findProp('text')?.value}</button>}
+      {component.type === 'button' && <button style={{ backgroundColor: component.findProp('color')?.value}}>{component.findProp('text')?.value}</button>}
       {component.type === 'carousel' && 
         <Carousel>
           {component.findProp('images')?.value.split('\n').map((image, index) => (

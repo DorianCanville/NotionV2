@@ -3,7 +3,7 @@ import { EditableComponent } from './components/EditableComponent';
 import { Component } from './models/Component';
 import { ComponentProp } from './models/ComponentProp';
 import { MouseEvent } from "react";
-import { ChartBarSquareIcon, ChatBubbleBottomCenterIcon, CursorArrowRaysIcon, ListBulletIcon, MapIcon, PhotoIcon, RectangleGroupIcon, TagIcon } from '@heroicons/react/24/outline';
+import { ChartBarSquareIcon, ChatBubbleBottomCenterIcon, CursorArrowRaysIcon, ListBulletIcon, MapIcon, PhotoIcon, RectangleGroupIcon, TagIcon, TrashIcon } from '@heroicons/react/24/outline';
 import './styles/index.scss';
 import { ComponentType } from './models/ComponentType';
 
@@ -72,16 +72,35 @@ function App() {
       case 'carousel':
         setComponents([...components, Component.CarouselComponent.clone()]);
         break;
+      case 'label':
+        setComponents([...components, Component.LabelComponent.clone()]);
+        break;
     }
   }
+
+  
+  function printDocument (id : string) {
+    let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
+
+    mywindow!.document.write(`<html><head><title>NotionV2</title>`);
+    mywindow!.document.write('</head><body >');
+    mywindow!.document.write(document.getElementById("worksheet")!.innerHTML);
+    mywindow!.document.write('</body></html>');
+  
+    mywindow!.document.close(); // necessary for IE >= 10
+    mywindow!.focus(); // necessary for IE >= 10*/
+    mywindow!.print();
+    mywindow!.close();   
+}
 
   return (
     <div className="App">
       <div className='navbar'>
         <img className='logo_cesi' src='./logo_cesi.png'/>
+        <input type="submit" onClick={(e) =>{ printDocument("worksheet")}} />
       </div>
       <div className='wrapper'>
-        <div className='worksheet'>
+        <div className='worksheet' id='worksheet'>
           {components.map((component, index) => (
             <EditableComponent key={index} component={component} onClick={(e: MouseEvent) => { handleComponentClick(e, component) }} onDelete={(e: MouseEvent) => { handleRemoveItem(e, component.id)}} />
           ))}
@@ -89,13 +108,14 @@ function App() {
         <div className='toolbox'>
           <div className='iconComponents'>
               <CursorArrowRaysIcon className='icon' onClick={() => handleToolbarAdd('button')} />
-              <ChatBubbleBottomCenterIcon className='icon' />
+              <ChatBubbleBottomCenterIcon className='icon' onClick={() => handleToolbarAdd('label')}/>
               <PhotoIcon className='icon' />
               <ListBulletIcon className='icon' />
               <RectangleGroupIcon className='icon' onClick={() => handleToolbarAdd('carousel')} />
               <TagIcon className='icon' />
               <ChartBarSquareIcon className='icon' />
               <MapIcon className='icon' />
+              <TrashIcon className='icon delete' onClick={() => setComponents([])}/>
           </div>
           {currentComponent && (
             <div className='properties'>
@@ -105,6 +125,7 @@ function App() {
                   <li key={index}><span className='propName'>{prop.name}</span>
                     { prop.type === 'string' && <input type="text" value={prop.value} onChange={(e) => { handleStringPropertiesChange(e, currentComponent, prop) }} /> }
                     { prop.type === 'images' && <textarea value={prop.value} className='editImages' onChange={(e) => { handleTextareaPropertiesChange(e, currentComponent, prop) }} /> }
+                    { prop.type === 'color' && <input type="color" value={prop.value} onChange={(e) => { handleStringPropertiesChange(e, currentComponent, prop) }} /> }
                   </li>
                 ))}
               </ul>
